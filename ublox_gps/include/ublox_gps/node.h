@@ -490,18 +490,18 @@ typedef boost::shared_ptr<ComponentInterface> ComponentPtr;
 class UbloxNode : public virtual ComponentInterface {
  public:
   //! How long to wait during I/O reset [s]
-  constexpr static int kResetWait = 10;
+  const int kResetWait = 10;
   //! how often (in seconds) to call poll messages
-  constexpr static double kPollDuration = 1.0;
+  const double kPollDuration = 1.0;
   // Constants used for diagnostic frequency updater
   //! [s] 5Hz diagnostic period
-  constexpr static float kDiagnosticPeriod = 0.2;
+  const float kDiagnosticPeriod = 0.2;
   //! Tolerance for Fix topic frequency as percentage of target frequency
-  constexpr static double kFixFreqTol = 0.15;
+  const double kFixFreqTol = 0.15;
   //! Window [num messages] for Fix Frequency Diagnostic
-  constexpr static double kFixFreqWindow = 10;
+  const double kFixFreqWindow = 10;
   //! Minimum Time Stamp Status for fix frequency diagnostic
-  constexpr static double kTimeStampStatusMin = 0;
+  const double kTimeStampStatusMin = 0;
 
   /**
    * @brief Initialize and run the u-blox node.

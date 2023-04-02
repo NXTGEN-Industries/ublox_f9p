@@ -37,8 +37,8 @@
 #include <time.h>
 
 #include <rtcm_msgs/Message.h>
-ros::Subscriber subRTCM;
-
+#include <mavros_msgs/RTCM.h>
+ros::Subscriber subRTCM, subMavRTCM;
 
 using namespace ublox_node;
 
@@ -1850,6 +1850,11 @@ void rtcmCallback(const rtcm_msgs::Message::ConstPtr &msg)
   gps.sendRtcm(msg->message);
 }
 
+void mavRtcmCallback(const mavros_msgs::RTCM::ConstPtr &msg)
+{
+  gps.sendRtcm(msg->data);
+  ROS_INFO_THROTTLE(5, "Sent corrections!");
+}
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "ublox_gps");
@@ -1857,11 +1862,11 @@ int main(int argc, char** argv) {
   nh->param("debug", ublox_gps::debug, 1);
 
   ros::NodeHandle param_nh("~");
-  std::string rtcm_topic;
+  std::string rtcm_topic, mav_rtcm_topic;
   param_nh.param("rtcm_topic", rtcm_topic, std::string("rtcm"));
+  param_nh.param("mav_rtcm_topic", mav_rtcm_topic, std::string("mav_rtcm"));
   subRTCM = nh->subscribe(rtcm_topic, 10, rtcmCallback);
-  
-
+  subMavRTCM = nh->subscribe(mav_rtcm_topic, 10, mavRtcmCallback);
 
   if(ublox_gps::debug) {
     if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME,
